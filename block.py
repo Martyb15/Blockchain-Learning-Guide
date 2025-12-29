@@ -1,6 +1,9 @@
 import hashlib
 import time
 
+
+# A block is just data + metadata + fingerprint
+# The hash "seals" the contents — any change is detectable
 class Block:
     def __init__(self, data: str):
         self.timestamp = time.time()
