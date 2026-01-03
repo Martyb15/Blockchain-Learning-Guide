@@ -17,13 +17,15 @@ class Block:
     timestamp: float = None
     hash: str = None
 
-block = Block()
 
-tx1 = Transaction("Alice", "Bob", 50)
-tx2 = Transaction("Bob", "Carol", 25)
+if __name__ == '__main__':
+    block = Block()
 
-print(f"Block contains {len(block.transactions)} transactions")
-print(f"First tx {tx1.sender} -> {tx1.recipient}: {tx1.amount}")
+    tx1 = Transaction("Alice", "Bob", 50)
+    tx2 = Transaction("Bob", "Carol", 25)
+
+    print(f"Block contains {len(block.transactions)} transactions")
+    print(f"First tx {tx1.sender} -> {tx1.recipient}: {tx1.amount}")
 
 
 """
