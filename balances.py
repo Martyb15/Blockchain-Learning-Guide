@@ -73,7 +73,30 @@ class SimpleChain:
 
 if __name__ == '__main__':
     bc = SimpleChain()
+
+    # Give Alice starting funds
     bc.set_balance("Alice", 100)
+    print(f"Initial: Alice has {bc.get_balance('Alice')}")
+    print()
+
+    # Valid transaction
+    bc.add_transaction(Transaction("Alice", "Bob", 30))
+
+    # Valid transaction
+    bc.add_transaction(Transaction("Alice", "Candice", 20))
+
+    # Invalid transaction (now that Alice's funds have been exhausted)
+    bc.add_transaction(Transaction("Alice", "Dave", 200))
+    print()
+
+    # check final balances
+    for name in ["Alice", "Bob", "Candice", "Dave"]:         # users are not properly tracked or stored yet (names are used as addresses here)
+        bc.get_balance(f"{name}: {bc.get_balance(name)}")
+
+
+
+
+
 
     
 
