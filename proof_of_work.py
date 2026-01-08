@@ -1,19 +1,24 @@
 # Make adding blocks cost something (prevents spam).
 # Anyone could flood the network with blocks. Proof of Work solves this by requiring miners to solve a
 # puzzle: find a number (nonce) that makes the block's hash start with a certain number of zeros.
+import random
 from transactions import Transaction
+from dataclasses import dataclass
+from typing import Dict
 
-DIFFUCULTY = 4
+STAKE_REWARD_PERCENT = 0.02
 
-# class Block:
-#     def __init__(self, data: str):
-#         self.timestamp = time.time()
-#         self.data      = data 
-#         self.hash      = self.compute_hash()
+@dataclass
+class Validator: 
+    address: str
+    stake: int
+    blocks_created: int = 0
 
-#     def compute_hash(self) -> str:
-#         content = f"{self.timestamp} {self.data}"
-#         return hashlib.sha256(content.encode()).hexdigest()
+class ProofOfStake: 
+    def __init__(self): 
+        self.validators: Dict[str, Validator] = {}
+        self.balances: Dict[str, int] = {}
+
 
 class Block: 
     def __init__(self, transactions, previous_hash):
@@ -41,3 +46,14 @@ if __name__ == "__main__":
     tx1 = Transaction("Alice", "Bob", 50)
     block = Block([tx1], 0)
     block.mine()
+
+
+"""
+Take-Home Challenge
+
+Staking Simulator
+1. Run 1000 selections. Does each validator's win rate match their stake %?
+2. Add a minimum stake requirement (e.g., 100 coins).
+3. Implement an unstaking delay (can't unstake for 10 blocks).
+4. BONUS: Auto-detect double-signing and slash automatically.
+"""
