@@ -22,10 +22,10 @@ class EscrowSystem:
         self.current_block = 0
 
     def set_balances(self, address: str, amount: int): 
-        pass
+        self.balances[address] = amount
 
-    def get_balances(self) -> int:
-        pass
+    def get_balances(self, address: str) -> int:
+        return self.balances.get(address, 0)
 
     def create_escrow(self, sender: str, recipient:str, amount:int):
         pass
@@ -35,4 +35,3 @@ class EscrowSystem:
 
     def refund(self, escrow_id: str) -> bool: 
         pass
-    
