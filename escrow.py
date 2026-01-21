@@ -46,7 +46,19 @@ class EscrowSystem:
         return escrow_id
 
     def claim(self, escrow_id: str, secret: str, claimer: str):
-        pass
+       escrow = self.escrows.get(escrow_id)
+       if not escrow or escrow.status != "pending": 
+           return False
+       if claimer != escrow.recipient: 
+           print(f"FAILED: Only recipient can claim")
+           return False
+       if hashlib.sha256(secret.encode()).hexdigest() != escrow.secret_hash:
+           print("FAILED: Wrong secret!")
+           return False
+       self.balances[escrow.recipient] = self.get_balance(escrow.recipient) + escrow.amount
+       escrow.status = "claimed"
+       print(f"CLAIMED: {escrow.recipient} recieve {escrow.amount}")
+       return True 
 
     def refund(self, escrow_id: str) -> bool: 
         pass
