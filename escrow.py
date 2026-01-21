@@ -21,10 +21,10 @@ class EscrowSystem:
         self.balances:       Dict[str, int]    = {}
         self.current_block = 0
 
-    def set_balances(self, address: str, amount: int): 
+    def set_balance(self, address: str, amount: int): 
         self.balances[address] = amount
 
-    def get_balances(self, address: str) -> int:
+    def get_balance(self, address: str) -> int:
         return self.balances.get(address, 0)
 
     def create_escrow(self, sender: str, recipient:str, amount:int, secret_hash: str, timeout_blocks: int = 10) -> Optional[str]:
@@ -61,4 +61,32 @@ class EscrowSystem:
        return True 
 
     def refund(self, escrow_id: str) -> bool: 
-        pass
+        escrow = self.escrow.get(escrow_id)
+        if not escrow or escrow.status !=  "pending": 
+            return False
+        if self.current_block < escrow.created_at + escrow.timeout_blocks: 
+            print(f"FAILED: Escrow not expired yet")
+
+    def advance_blocks(self, n: int = 1): 
+        self.current_block += n
+        print(f"Advanced to block {self.current_block}")
+
+
+# ==== Run the Demo ====
+if __name__ == "__main__": 
+    system = EscrowSystem()
+    system.set_balance("Alice", 100)
+
+    secret = "mango123" 
+    secret_hash = hashlib.sha256(secret.encode()).hexdigest()
+
+    print("=== Creating Escrow ===")
+    escrow_id = system.create_escrow("Alice", "Bob", 50, secret_hash, timeout_blocks=5)
+    print("\n=== Bob Tries Wrong secret ===")
+    system.claim(escrow_id, "wrong_guess", "Bob")
+
+    print("\n=== Bob Uses Correct Secret ===")
+    system.claim(escrow_id, secret, "Bob")
+    print(f"Bob's balance: {system.get_balance("Bob")}")
+
+    
