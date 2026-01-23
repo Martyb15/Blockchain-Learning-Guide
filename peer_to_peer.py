@@ -13,11 +13,11 @@ class Block:
     hash: str = ""
 
     def __post_init__(self): 
-        pass
+        self.hash = self.compute_hash()
 
     def compute_hash(self) -> str: 
-        pass
-
+        content = f"{self.index}{self.data}{self.previous_hash}{self.timestamp}"
+        return hashlib.sha256(content.encode()).hexdigest()
 
 class Node: 
     def __init__(self, name: str): 
