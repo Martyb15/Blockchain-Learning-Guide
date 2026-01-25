@@ -29,10 +29,13 @@ class Node:
         self.chain.append(genesis)
 
     def connect(self, peer: 'Node'): 
-        pass
+        self.peers.add(peer)
+        peer.peers.add(self)
+        print(f"{self.name} <-> {peer.name} connected") 
 
     def broadcast(self, message: dict): 
-        pass
+        for peer in self.peers:
+            peer.receive(message, self)
 
     def receive(self, message: dict, sender: 'Node'): 
         pass
