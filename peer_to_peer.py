@@ -38,10 +38,19 @@ class Node:
             peer.receive(message, self)
 
     def receive(self, message: dict, sender: 'Node'): 
-        pass
+        self.pending_messages.append({"msg": message, "from": sender.name})
 
     def process_message(self): 
-        pass
+        for item in self.pending_messages:
+            msg = item["msg"]
+            if msg["type"] == "new_block":
+                b = msg["block"]
+                new_block = Block(b["index"], b["data"], b["previous_hash"], b["timestamp"])
+                if new_block.index == len(self.chain):
+                    if new_block.previous_hash == self.chain[-1].hash:
+                        self.chain.append(new_block)
+                        print(f" {self.name}: Accepted block {new_block.index}")
+        self.pending_messages.clear()
 
     def create_block(self, data: str) -> Block: 
         pass
