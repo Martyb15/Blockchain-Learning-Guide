@@ -53,7 +53,11 @@ class Node:
         self.pending_messages.clear()
 
     def create_block(self, data: str) -> Block: 
-        pass
+        block = Block(len(self.chain), data, self.chain[-1].hash)
+        self.chain.append(block)
+        self.broadcast({"type": "new_block","block": {"index": block.index, "data": block.data, "previous_hash": block.previous_hash, "timestamp": block.timestamp}})
+        print(f"{self.name}: Created block {block.index}")
+        return block
 
 
 class Network: 
