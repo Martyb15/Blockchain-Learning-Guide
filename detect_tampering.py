@@ -12,7 +12,14 @@ class Block:
         content = f"{self.timestamp}{self.data}{self.previous_hash}"
         return hashlib.sha256(content.encode()).hexdigest()
 
-
+def build_chain(data_list: list) -> list:
+    chain = []
+    previous_hash = "0"
+    for data in data_list:
+        block = Block(data, previous_hash)
+        chain.append(block)
+        previous_hash = block.hash
+    return chain
 
 def is_chain_valid(chain: list[Block]) -> bool:
     for i in range(1, len(chain)): 
