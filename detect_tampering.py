@@ -22,23 +22,34 @@ def build_chain(data_list: list) -> list:
     return chain
 
 def is_chain_valid(chain: list[Block]) -> bool:
+    """Check if the entire chain is valid (untampered)"""
     for i in range(1, len(chain)): 
         current = chain[i]
         previous = chain[i - 1]
 
+    # Check 1: Has this blocked been tampered with? 
         if current.hash != current.compute_hash(): 
             print(f"Block {i} has been modified")
             return False
-        
+    # Check 2: Is the link to previous block intact? 
         if current.previous_hash != previous.hash: 
             print(f"Block {i} link is broken!")
             return False
-        
+    print(f"VALID: Chain integrity verified!")
     return True
 
-print(is_chain_valid(chain))
-chain.data[1] = "Alice pays Bob 999999"
-print(is_chain_valid(chain))
+
+if __name__ == "__main__":
+    chain = build_chain([
+        "Genesis Block",
+        "Alice pays Bob 50",
+        "Bob pays Carol 25",
+    ])
+    print("=== Testing Valid Chain ===")
+    pass
+    print("=== Tampering With Block 1 ===")
+    pass
+    print("=== Attacker Tries to Fix Hash ===")
 
 
 """
