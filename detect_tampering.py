@@ -56,9 +56,8 @@ if __name__ == "__main__":
 Take-Home Challenge
 
 The Attacker Simulation
-1. Write a function tamper_block(chain, index, new_data) that changes a block's data and tries to "fix" the
-chain by recalculating hashes.
-2. Can you make the tampered chain pass validation? What would you need to recalculate?
-3. BONUS: Create a detailed_validation(chain) function that returns a report of ALL problems found, not
-just the first one.
+1. Write a function that tampers with a block AND recalculates ALL subsequent hashes. Can you fool the
+validator?
+2. Create detailed_validation(chain) that returns a list of ALL problems found, not just the first.
+3. BONUS: Time how long it takes to "fix" a tampered chain of 10 vs 100 vs 1000 blocks.
 """
