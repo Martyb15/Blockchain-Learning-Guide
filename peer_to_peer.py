@@ -62,16 +62,37 @@ class Node:
 
 class Network: 
     def __init__(self): 
-        pass
+        self.nodes: List[Node] = []
     
     def add_node(self, name: str) -> Node:
-        pass
+        node = Node(name)
+        self.nodes.append(node)
+        return node
 
     def tick(self): 
-        pass
+        for node in self.nodes:
+            node.process_message()
 
 
 
 # === Run Demo ===
-if __name__ == "__main__": 
-    pass
+
+if __name__ == "__main__":
+    print("=== P2P Network Simulation ===\n")
+    network = Network()
+    alice = network.add_node("Alice")
+    bob = network.add_node("Bob")
+    carol = network.add_node("Carol")
+    print("--- Connecting Nodes ---")
+    alice.connect(bob)
+    bob.connect(carol)
+    alice.connect(carol)
+    print()
+    print("--- Alice Creates Block ---")
+    alice.create_block("Tx: Alice -> Bob: 50")
+    network.tick()
+    print()
+    print("--- Chain Status ---")
+    for node in network.nodes:
+        hashes = [b.hash[:8] for b in node.chain]
+        print(f"{node.name}: {' -> '.join(hashes)}")

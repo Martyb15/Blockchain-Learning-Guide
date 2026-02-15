@@ -90,3 +90,10 @@ if __name__ == "__main__":
     print(f"Bob's balance: {system.get_balance("Bob")}")
 
     
+    """
+    Take-Home Challenge
+        Advanced Escrow
+        1. Integrate escrow into Phase 6 blockchain as OPEN_ESCROW and CLAIM_ESCROW transactions.
+        2. Add partial claims (claim some, leave rest).
+        3. BONUS: Create atomic swap between two escrows.
+    """
