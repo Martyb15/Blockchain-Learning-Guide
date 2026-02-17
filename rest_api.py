@@ -15,7 +15,29 @@ class Block:
     
 
 class Blockchain: 
-    pass
+    def __init__(self): 
+        self.chain = [Block(0, [], "0")]
+        self.pending = []
+        self.balances = {}
+    
+    def add_transaction(self, sender, recipient, amount): 
+        if sender != "SYSTEM" and self.balances.get(sender, 0) < amount:
+            return False
+        self.pending.append({"sender": sender, "recipient": recipient, "amount": amount})
+        return True
+
+    def mine(self, miner): 
+        reward = {"sender": "SYSTEM", "recipient": miner, "amount": 50}
+        txs = self.pending + [reward]
+        block = Block(len(self.chain), txs, self.chain[-1].hash)
+        for tx in txs: 
+            if tx["sender"] != "SYSTEM": 
+                self.balances[tx["sender"]] -= tx["amount"]
+            self.balances[tx["recipient"]] = self.balances.get(tx["recipient"], 0) + tx["amount"]
+            self.chain.append(block)
+        self.pending = []
+        return block
+    
 
 class TxRequest(BaseModel): 
     pass
