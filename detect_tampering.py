@@ -46,11 +46,19 @@ if __name__ == "__main__":
         "Bob pays Carol 25",
     ])
     print("=== Testing Valid Chain ===")
-    pass
-    print("=== Tampering With Block 1 ===")
-    pass
-    print("=== Attacker Tries to Fix Hash ===")
+    is_chain_valid(chain)
+    print()
 
+    print("=== Tampering With Block 1 ===")
+    chain[1].data = "Alice pays Bob 999999" # Attacker changes transaction amount
+    is_chain_valid(chain)
+    print()
+    
+    print("=== Attacker Tries to Fix Hash ===")
+    chain[1].hash = chain[1].compute_hash() # Recalculate hash to cover tracks
+    is_chain_valid(chain) # Still fails because block 2's previous_hash is now wrong
+    print()
+    print("Even fixing one hash breaks the next link, showing how tampering is easily detected in a blockchain!")
 
 """
 Take-Home Challenge

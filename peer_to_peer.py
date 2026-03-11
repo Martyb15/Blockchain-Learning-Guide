@@ -24,7 +24,7 @@ class Node:
         self.name = name
         self.chain: List[Block] = []
         self.peers: Set['Node'] = set()
-        self.pending_message: List[dict] = []
+        self.pending_messages: List[dict] = []
         genesis = Block(0, "Genesis", "0", 0)
         self.chain.append(genesis)
 

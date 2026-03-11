@@ -30,7 +30,7 @@ def verify_signature(address: str, message: str, signature: str) -> bool:
         )
 
         public_key.verify(
-            bytes.fromhex(signature), message.encode(), ec.ECDSA(hashes.SHA25s())
+            bytes.fromhex(signature), message.encode(), ec.ECDSA(hashes.SHA256())
         )
         return True
     except (InvalidSignature, ValueError): 

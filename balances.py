@@ -17,10 +17,10 @@ class Block:
         self.previous_hash = previous_hash
         self.hash = self.compute_hash()
 
-        def compute_hash(self) -> str: 
-            tx_str = "".join(f"{t.sender}{t.recipient}{t.amount}" for t in self.transactions)
-            content = f"{self.timestamp}{tx_str}{self.previous_hash}"
-            return hashlib.sha256(content.encode()).hexdigest()
+    def compute_hash(self) -> str: 
+        tx_str = "".join(f"{t.sender}{t.recipient}{t.amount}" for t in self.transactions)
+        content = f"{self.timestamp}{tx_str}{self.previous_hash}"
+        return hashlib.sha256(content.encode()).hexdigest()
 
 class SimpleChain: 
     def __init__(self):
@@ -42,7 +42,7 @@ class SimpleChain:
     def add_transaction(self, tx: Transaction) -> bool:
         # check if sender has enought funds
         if tx.sender != "SYSTEM": 
-            if self.get_balance(tx.sender, 0) < tx.amount:
+            if self.get_balance(tx.sender) < tx.amount:
                 print(f"Rejected: {tx.sender} is broke!")
                 return False
             #move money

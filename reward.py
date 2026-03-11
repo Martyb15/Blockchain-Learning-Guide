@@ -37,9 +37,9 @@ class Block:
 
 class Blockchain:
     def __init__(self):
-        self.chain = List[Block] = []
-        self.pending = List[Transaction] = []
-        self.balances = Dict[str, int] = {}
+        self.chain: List[Block] = []
+        self.pending: List[Transaction] = []
+        self.balances: Dict[str, int] = {}
         genesis = Block([], "0")
         genesis.hash = genesis.compute_hash()
         self.chain.append(genesis)
@@ -73,8 +73,8 @@ class Blockchain:
     
 # ==== Running the Demo ====
 if __name__ == "__main__": 
-    bc = Blockchain
-    bc.balances["Alice", 0] = 100 
+    bc = Blockchain()
+    bc.balances["Alice"] = 100 
 
     print("Mining Reward Demo")
     bc.add_transaction(Transaction("Alice", "Bob", 30, fee=5))

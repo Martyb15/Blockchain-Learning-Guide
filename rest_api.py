@@ -34,7 +34,7 @@ class Blockchain:
             if tx["sender"] != "SYSTEM": 
                 self.balances[tx["sender"]] -= tx["amount"]
             self.balances[tx["recipient"]] = self.balances.get(tx["recipient"], 0) + tx["amount"]
-            self.chain.append(block)
+        self.chain.append(block)
         self.pending = []
         return block
     

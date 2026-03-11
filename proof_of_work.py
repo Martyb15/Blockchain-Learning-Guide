@@ -4,15 +4,13 @@
 import hashlib
 import time
 
-STAKE_REWARD_PERCENT = 0.02
-
 class Block: 
     def __init__(self, data: str, previous_hash: str = "0"):
         self.data = data
         self.previous_hash = previous_hash
         self.timestamp = time.time()
         self.nonce = 0
-        self.hash = None
+        self.hash = ""
 
     def compute_hash(self) -> str: 
         content = f"{self.timestamp}{self.data}{self.previous_hash}{self.nonce}"
@@ -36,13 +34,12 @@ class Block:
 
         
 
-
 if __name__ == "__main__":
     print("=== Proof of Work Demo ===")
     print("Mining blocks at different difficulties ")
 
     for difficulty in range(1,6): 
-        block = Block("Test block at difficutly {difficulty}", "0")
+        block = Block(f"Test block at difficutly {difficulty}", "0")
         result = block.mine(difficulty)
         print()
         print(f"Difficulty {difficulty} (hash starts with {"0" * difficulty})")

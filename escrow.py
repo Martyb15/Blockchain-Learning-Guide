@@ -31,7 +31,7 @@ class EscrowSystem:
         if self.get_balance(sender) < amount:
             print(f"FAILURE: {sender} has insufficient funds")
             return None
-        escrow_id = hashlib.sha256(f"{sender}{recipient}{amount}{time.time()}".encode).hexdigest()[:16]
+        escrow_id = hashlib.sha256(f"{sender}{recipient}{amount}{time.time()}".encode()).hexdigest()[:16]
         self.balances[sender] -= amount 
         self.escrows[escrow_id] = Escrow(
             id = escrow_id,
@@ -61,11 +61,17 @@ class EscrowSystem:
        return True 
 
     def refund(self, escrow_id: str) -> bool: 
-        escrow = self.escrow.get(escrow_id)
+        escrow = self.escrows.get(escrow_id)
         if not escrow or escrow.status !=  "pending": 
             return False
         if self.current_block < escrow.created_at + escrow.timeout_blocks: 
             print(f"FAILED: Escrow not expired yet")
+            return False
+        self.balances[escrow.sender] = self.get_balance(escrow.sender) + escrow.amount
+        escrow.status = "refunded"
+        print (f"REFUNDED: {escrow.recipient} received {escrow.amount}")
+        return True
+
 
     def advance_blocks(self, n: int = 1): 
         self.current_block += n

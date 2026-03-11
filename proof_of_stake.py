@@ -51,6 +51,7 @@ class ProofOfStake:
         self.balances[validator_addr] = self.balances.get(validator_addr, 0) + reward
         validator.blocks_created += 1
         print(f"BLOCK: {validator_addr} created block, earned {reward} coins")
+        return validator_addr
 
     def slash(self, address: str, percent: int = 50): 
         if address not in self.validators: 
