@@ -40,10 +40,14 @@ class SimpleChain:
         return self.balances.get(address, 0)
 
     def add_transaction(self, tx: Transaction) -> bool:
+        """ Add a transaction if sender has enough funds. Returns True if accepted, False if rejected."""
         # check if sender has enought funds
-        if tx.sender != "SYSTEM": 
-            if self.get_balance(tx.sender) < tx.amount:
-                print(f"Rejected: {tx.sender} is broke!")
+        if tx.sender != "SYSTEM":
+        # Check balance MINUS already-pending outflows
+            pending_outflow = sum(t.amount for t in self.pending if t.sender == tx.sender)
+            available = self.get_balance(tx.sender) - pending_outflow
+            if available < tx.amount:
+                print(f"REJECTED: {tx.sender} has insufficient funds!")
                 return False
             #move money
             self.pending.append(tx)
